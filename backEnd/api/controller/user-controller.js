@@ -9,7 +9,6 @@ let signUp = async function (req, res) {
   // Hashing To passWord
   // User Creation
   // Token Generate
-  // const { userName, email, passWord } = req.body;
   try {
     let user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -30,7 +29,6 @@ let signUp = async function (req, res) {
         id: user.id,
       },
     };
-
     const authToken = jwt.sign(data, SECRET_KEY);
     console.log(authToken);
     res.json({ user, authToken });

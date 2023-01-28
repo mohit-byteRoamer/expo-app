@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const TodoTask = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
   title: {
     type: String,
     required: true,
@@ -8,5 +12,5 @@ const TodoTask = mongoose.Schema({
 });
 
 const Task = mongoose.model("todoTask", TodoTask);
-task.createIndexes();
+Task.createIndexes();
 export default Task;
