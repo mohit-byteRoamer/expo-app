@@ -9,8 +9,8 @@ import {
 let api = Router();
 
 api.post("/createUserTask", auth, createUserTask);
-api.get("/updateUserTask", auth, updateUserTask);
-api.get("/deleteUserTask", auth, deleteUserTask);
+api.put("/updateUserTask/:id", auth, updateUserTask);
+api.delete("/deleteUserTask/:id", auth, deleteUserTask);
 api.get("/getUserTask", auth, getUserTask);
 
 export default api;
