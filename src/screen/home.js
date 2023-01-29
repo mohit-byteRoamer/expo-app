@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Pressable, View, Text, TextInput } from "react-native";
+import axios from "../../axios";
 
 function Home(props) {
   const [todoValue, setValue] = React.useState("");
@@ -29,14 +30,22 @@ function Home(props) {
     setTodoList(cloneArray);
   };
 
-  let updateTodoItem = function (id,updateItem) {
+  let updateTodoItem = function (id, updateItem) {
     let cloneArray = [...todoList];
-    cloneArray.indexOf(id)
+    cloneArray.indexOf(id);
     setTodoList(cloneArray);
   };
 
   React.useEffect(() => {
-    console.log(props);
+    axios
+      .get(`http://172.20.10.2:3000/task/getUserTask/`)
+      .then((res) => {
+        debugger;
+        console.log("asmkdlkasmdalsdm");
+        setTodoList(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
   return (
     <View style={styles.todoSection}>
@@ -53,19 +62,19 @@ function Home(props) {
         </Pressable>
       </View>
       <View>
-        {todoList &&
+        {todoList.length > 0 &&
           todoList.map((val, key) => {
             return (
               <View style={styles.todoCard}>
                 <View style={styles.upperSection}>
                   <View>
                     <Text style={styles.todoCardText} key={key}>
-                      {val}
+                      {val.title}
                     </Text>
                   </View>
                   {currentEditSection == key ? (
                     <Pressable
-                      onPress={() => updateTodoItem(key,editValue)}
+                      onPress={() => updateTodoItem(key, editValue)}
                       style={styles.cardButton}
                     >
                       <Text style={styles.buttonText}>Update</Text>
