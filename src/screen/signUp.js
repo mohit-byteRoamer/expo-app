@@ -13,17 +13,26 @@ import {
 
 const SignUp = function (props) {
   const authContext = React.useContext(AuthContext);
-  const { name, setName, email, setEmail, password, setPassword, setShowTab } =
-    authContext;
+  const {
+    name,
+    setName,
+    setUserName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    setShowTab,
+  } = authContext;
   const handleSignUp = function (name, email, password) {
     axios
-      .post(`http://localhost:3000/user/signUp`, {
+      .post(`/user/signUp`, {
         name,
         email,
         password,
       })
       .then((res) => {
         AsyncStorage.setItem("token", res.data.authToken);
+        setUserName(res.data.user.name);
         setShowTab(true);
       })
       .catch((e) => {

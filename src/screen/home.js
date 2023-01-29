@@ -8,10 +8,9 @@ function Home(props) {
   const [currentEditSection, setCurrentEditSection] = React.useState(null);
   const [todoList, setTodoList] = React.useState([]);
 
- 
   React.useEffect(() => {
     axios
-      .get(`http://172.20.10.2:3000/task/getUserTask/`)
+      .get(`/task/getUserTask/`)
       .then((res) => {
         setTodoList(res.data);
       })

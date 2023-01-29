@@ -7,7 +7,7 @@ const TodoState = (props) => {
   const [message, setMessage] = React.useState("");
 
   let getUserTask = () => {
-    axios.get(`${host}/task/getUserTask`).then((res) => {
+    axios.get(`/task/getUserTask`).then((res) => {
       debugger;
       setTodoItem(res.data);
       console.log(res.data);
@@ -16,7 +16,7 @@ const TodoState = (props) => {
 
   let createUserTask = (title) => {
     axios
-      .post(`${host}/task/createUserTask`, {
+      .post(`/task/createUserTask`, {
         title,
       })
       .then((res) => {
@@ -27,12 +27,12 @@ const TodoState = (props) => {
         setMessage(res.data.message);
         setTimeout(() => {
           setMessage("");
-        }, 1500);
+        }, 1000);
       });
   };
 
   let updateUserTask = (id, title, offModal) => {
-    axios.put(`${host}/task/updateUserTask/${id}`, { title }).then((res) => {
+    axios.put(`/task/updateUserTask/${id}`, { title }).then((res) => {
       let todoItemsClone = [...todoItem];
       let updatedtodoItemClone = todoItemsClone.find(
         (i) => i._id == res.data.updateTask._id
@@ -43,12 +43,12 @@ const TodoState = (props) => {
       setMessage(res.data.message);
       setTimeout(() => {
         setMessage("");
-      }, 1500);
+      }, 1000);
     });
   };
 
   let deleteUserTask = (id, index) => {
-    axios.delete(`${host}/task/deleteUserTask/${id}`).then((res) => {
+    axios.delete(`/task/deleteUserTask/${id}`).then((res) => {
       const deleteItem = [...todoItem];
       deleteItem.splice(index, 1);
       setTodoItem(deleteItem);

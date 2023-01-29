@@ -16,7 +16,7 @@ const SignIn = function (props) {
     authContext;
   const handleSignIn = () => {
     axios
-      .post(`http://localhost:3000/user/signIn`, {
+      .post(`/user/signIn`, {
         email,
         password,
       })

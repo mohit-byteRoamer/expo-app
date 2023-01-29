@@ -38,18 +38,24 @@ function User(props) {
   return (
     <ScrollView showsVerticalScrollIndicator={false} persistentScrollbar={true}>
       <View style={style.userRoot}>
-        <View style={style.userUpperSection}>
+        <View style={style.userSection}>
           <Image style={style.profilePic} source={icon.userIcon} />
-          <Text style={style.userName}>{userName ? userName : "mohit"}</Text>
-          <View style={style.taskInfoBox}>
-            <Text>{`User Total Task : 10`}</Text>
+          <Text style={style.userName}>{userName}</Text>
+          <View style={style.controller}>
+            <View style={style.taskInfoBox}>
+              <Text>{`User Total Task : ${todoItem.length}`}</Text>
+            </View>
+            <Pressable
+              onPress={() => showEditSection(key)}
+              style={style.cardButton}
+            >
+              <Text style={style.buttonText}>Log Out</Text>
+            </Pressable>
           </View>
         </View>
-        <View>
+        <View style={style.userSection}>
           <Text style={style.header}>Your Task</Text>
           <View>
-            <Text>Your Task</Text>
-
             <View>
               {todoItem.length > 0 &&
                 todoItem.map((val, key) => {
@@ -118,7 +124,7 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  userUpperSection: {
+  userSection: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -133,6 +139,13 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textTransform: "uppercase",
+  },
+
+  controller: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   taskInfoBox: {
     shadowColor: "#171717",
@@ -166,6 +179,9 @@ const style = StyleSheet.create({
     color: "white",
   },
   cardButton: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     margin: 4,
     borderRadius: 4,
     padding: 4,
