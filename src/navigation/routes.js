@@ -3,7 +3,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from "react-native";
-import { Root, Home, About, User, SignUp, SignIn } from "../screen/screens";
+import {
+  Root,
+  Home,
+  CreateTask,
+  User,
+  SignUp,
+  SignIn,
+} from "../screen/screens";
 import icon from "../constants/icon";
 import NavigationStrings from "../constants/Navigation-Strings";
 import AuthContext from "../context/auth/authContext";
@@ -11,14 +18,14 @@ import AuthContext from "../context/auth/authContext";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function Routes() {
+let Routes = function () {
   const authContext = React.useContext(AuthContext);
   const { showTab } = authContext;
   return (
     <NavigationContainer>
       {showTab ? (
         <Tab.Navigator
-          initialRouteName={NavigationStrings.Home}
+          initialRouteName={NavigationStrings.CreateTask}
           screenOptions={{
             tabBarActiveTintColor: "#2A5ADF",
             tabBarInactiveTintColor: "#D4D7DF",
@@ -44,8 +51,8 @@ function Routes() {
             }}
           />
           <Tab.Screen
-            name={NavigationStrings.About}
-            component={About}
+            name={NavigationStrings.CreateTask}
+            component={CreateTask}
             options={{
               tabBarIcon: ({ focused }) => {
                 return (
@@ -89,6 +96,6 @@ function Routes() {
       )}
     </NavigationContainer>
   );
-}
+};
 
 export default Routes;

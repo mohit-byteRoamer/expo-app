@@ -4,9 +4,11 @@ import axios from "../../../axios";
 const TodoState = (props) => {
   const host = "http://localhost:3000";
   const [todoItem, setTodoItem] = React.useState([]);
+  const [message, setMessage] = React.useState("");
 
   let getUserTask = () => {
     axios.get(`${host}/task/getUserTask`).then((res) => {
+      debugger;
       setTodoItem(res.data);
       console.log(res.data);
     });
@@ -18,27 +20,38 @@ const TodoState = (props) => {
         title,
       })
       .then((res) => {
-        setTodoItem(todoItem.concat(res.data));
+        let cloneTodoItem = [...todoItem];
+        let item = res.data.task;
+        cloneTodoItem.push(item);
+        setTodoItem(cloneTodoItem);
+        setMessage(res.data.message);
+        setTimeout(() => {
+          setMessage("");
+        }, 1500);
       });
   };
 
-  let updateUserTask = (id, title) => {
+  let updateUserTask = (id, title, offModal) => {
     axios.put(`${host}/task/updateUserTask/${id}`, { title }).then((res) => {
       let todoItemsClone = [...todoItem];
       let updatedtodoItemClone = todoItemsClone.find(
-        (i) => i._id == res.data.note._id
-      ); // Error
-      updatedtodoItemClone.title = res.data.note.title;
-      setNotes(todoItemsClone);
+        (i) => i._id == res.data.updateTask._id
+      );
+      updatedtodoItemClone.title = res.data.updateTask.title;
+      setTodoItem(todoItemsClone);
+      offModal(null);
+      setMessage(res.data.message);
+      setTimeout(() => {
+        setMessage("");
+      }, 1500);
     });
   };
 
-  let deleteUserTask = (id) => {
+  let deleteUserTask = (id, index) => {
     axios.delete(`${host}/task/deleteUserTask/${id}`).then((res) => {
-      const newNotes = notes.filter((note) => {
-        return note._id !== res.data._id;
-      });
-      setNotes(newNotes);
+      const deleteItem = [...todoItem];
+      deleteItem.splice(index, 1);
+      setTodoItem(deleteItem);
     });
   };
 
@@ -46,6 +59,7 @@ const TodoState = (props) => {
     <TodoContext.Provider
       value={{
         todoItem,
+        message,
         getUserTask,
         createUserTask,
         updateUserTask,

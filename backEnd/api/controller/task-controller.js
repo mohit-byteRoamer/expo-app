@@ -5,7 +5,7 @@ let createUserTask = async function (req, res) {
     user: req.user.id,
     title: req.body.title,
   });
-  res.status(200).json({ message: "Task Created" });
+  res.status(200).json({ task: task, message: "Task Created" });
 };
 
 let updateUserTask = async function (req, res) {
@@ -14,10 +14,11 @@ let updateUserTask = async function (req, res) {
   const newTask = {
     title,
   };
-
+  console.log(newTask);
   try {
-    await Task.findByIdAndUpdate(id, newTask, { new: true });
-    res.status(200).json(newTask);
+    let updateTask = await Task.findByIdAndUpdate(id, newTask);
+    updateTask["title"] = title;
+    res.status(200).json({ updateTask: updateTask, message: "Item Updated" });
   } catch (error) {
     res.status(500).json({ message: "something want wrong" });
   }
@@ -27,7 +28,7 @@ let deleteUserTask = async function (req, res) {
   const id = req.params.id;
   try {
     const deleteTask = await Task.findByIdAndRemove(id);
-    res.status(202).json({ message: "your task is deleted" });
+    res.status(202).json({ message: "Your task have deleted" });
   } catch (error) {
     res.status(500).json({ message: "something want wrong" });
   }

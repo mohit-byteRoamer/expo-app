@@ -6,36 +6,9 @@ function Home(props) {
   const [todoValue, setValue] = React.useState("");
   const [alert, setAlert] = React.useState(false);
   const [currentEditSection, setCurrentEditSection] = React.useState(null);
-  const [editValue, setEditValue] = React.useState("");
   const [todoList, setTodoList] = React.useState([]);
-  let createTodo = function (value) {
-    if (value.length >= 3) {
-      let array = [...todoList];
-      array.push(value);
-      setTodoList(array);
-    } else {
-      setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
-    }
-  };
 
-  let showEditSection = function (key) {
-    setCurrentEditSection(key);
-  };
-  let deleteTodoItem = function (itemId) {
-    let cloneArray = [...todoList];
-    cloneArray.splice(itemId, 1);
-    setTodoList(cloneArray);
-  };
-
-  let updateTodoItem = function (id, updateItem) {
-    let cloneArray = [...todoList];
-    cloneArray.indexOf(id);
-    setTodoList(cloneArray);
-  };
-
+ 
   React.useEffect(() => {
     axios
       .get(`http://172.20.10.2:3000/task/getUserTask/`)

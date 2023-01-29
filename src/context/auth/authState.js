@@ -1,22 +1,19 @@
 import AuthContext from "./authContext";
 import React from "react";
-import axios from "../../../axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AuthState = (props) => {
   const host = "http://localhost:3000";
+  const [userName, setUserName] = React.useState("");
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   let [showTab, setShowTab] = React.useState(false);
 
-  let signIn = (title) => {
-    
-  };
-
   return (
     <AuthContext.Provider
       value={{
+        userName,
+        setUserName,
         name,
         setName,
         email,
@@ -25,7 +22,6 @@ const AuthState = (props) => {
         setPassword,
         showTab,
         setShowTab,
-        signIn,
       }}
     >
       {props.children}
