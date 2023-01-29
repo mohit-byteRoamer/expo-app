@@ -1,19 +1,80 @@
-// In App.js in a new project
-
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Home, About } from "../screen/screens";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Image } from "react-native";
+
+import { Home, About, User } from "../screen/screens";
+import icon from "../constants/icon";
 import NavigationStrings from "../constants/Navigation-Strings";
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 function Routes() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name={NavigationStrings.Home} component={Home} />
-        <Stack.Screen name={NavigationStrings.About} component={About} />
-      </Stack.Navigator>
+      <Tab.Navigator
+        initialRouteName={NavigationStrings.Home}
+        screenOptions={{
+          tabBarActiveTintColor: "#2A5ADF",
+          tabBarInactiveTintColor: "#D4D7DF",
+          tabBarShowLabel: false,
+        }}
+      >
+        <Tab.Screen
+          name={NavigationStrings.Home}
+          component={Home}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <Image
+                  style={{
+                    tintColor: focused ? "#2A5ADF" : "#D4D7DF",
+                    width: 23,
+                    height: 23,
+                  }}
+                  source={icon.homeIcon}
+                />
+              );
+            },
+          }}
+        />
+        <Tab.Screen
+          name={NavigationStrings.About}
+          component={About}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <Image
+                  style={{
+                    tintColor: focused ? "#2A5ADF" : "#D4D7DF",
+                    width: 23,
+                    height: 23,
+                  }}
+                  source={icon.createIcon}
+                />
+              );
+            },
+          }}
+        />
+        <Tab.Screen
+          name={NavigationStrings.User}
+          component={User}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <Image
+                  style={{
+                    tintColor: focused ? "#2A5ADF" : "#D4D7DF",
+                    width: 23,
+                    height: 23,
+                  }}
+                  source={icon.userIcon}
+                />
+              );
+            },
+          }}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }

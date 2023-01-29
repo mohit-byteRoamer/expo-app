@@ -40,10 +40,7 @@ function Home(props) {
     axios
       .get(`http://172.20.10.2:3000/task/getUserTask/`)
       .then((res) => {
-        debugger;
-        console.log("asmkdlkasmdalsdm");
         setTodoList(res.data);
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }, []);

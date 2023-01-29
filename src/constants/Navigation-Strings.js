@@ -1,1 +1,1 @@
-export default { Home: "Home", About: "About" };
+export default { Home: "Home", About: "About", User: "User" };
