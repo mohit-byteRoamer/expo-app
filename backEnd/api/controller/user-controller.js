@@ -12,7 +12,9 @@ let signUp = async function (req, res) {
   try {
     let user = await User.findOne({ email: req.body.email });
     if (user) {
-      return res.status(400).json({ errors: "Sorry User Already Exists Here" });
+      return res
+        .status(400)
+        .json({ message: "Sorry User Already Exists Here" });
     }
 
     const salt = await bcrypt.genSaltSync(10);
@@ -43,7 +45,7 @@ let signIn = async function (req, res) {
   try {
     const existingUser = await User.findOne({ email: email });
     if (!existingUser) {
-      return res.status(400).json({ message: "user not found" });
+      return res.status(400).json({ message: "User not found" });
     }
     const checkPassword = await bcrypt.compare(password, existingUser.password);
     if (!checkPassword) {

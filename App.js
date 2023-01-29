@@ -2,13 +2,16 @@
 
 import * as React from "react";
 import { View, Text } from "react-native";
+import AuthState from "./src/context/auth/authState";
 import Routes from "./src/navigation/routes";
 
 function App() {
   return (
-    <View style={{ flex: 1 }}>
-      <Routes />
-    </View>
+    <AuthState>
+      <View style={{ flex: 1 }}>
+        <Routes />
+      </View>
+    </AuthState>
   );
 }
 

@@ -18,7 +18,6 @@ instance.interceptors.request.use((config) => {
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem("token").then((token) => {
       config.headers["auth-token"] = token;
-      console.log(token);
       resolve(config);
     });
   });
