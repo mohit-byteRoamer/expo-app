@@ -10,20 +10,25 @@ import {
   StyleSheet,
 } from "react-native";
 
-const SignIn = function (props) {
+const ForgetPassword = function (props) {
   const authContext = React.useContext(AuthContext);
-  const { setUserName, email, setEmail, password, setPassword, setShowTab } =
-    authContext;
-  const handleSignIn = () => {
+  const {
+    authUserMessage,
+    setAuthUserMessage,
+    email,
+    setEmail,
+  } = authContext;
+  const handleForgetPassword = () => {
     axios
-      .post(`/user/signIn`, {
+      .post(`/user/forgetPassword`, {
         email,
-        password,
       })
       .then((res) => {
-        setUserName(res.data.existingUser.name);
-        AsyncStorage.setItem("token", res.data.authToken);
-        setShowTab(true);
+        setAuthUserMessage(res.data.message);
+        setTimeout(() => {
+          setAuthUserMessage("");
+          props.navigation.navigate("resetPassword");
+        }, 1000);
       })
       .catch((e) => {
         if (e.response.data.message) {
@@ -31,10 +36,6 @@ const SignIn = function (props) {
           props.navigation.navigate("SignUp");
         }
       });
-  };
-
-  const moveToForgetPage = () => {
-    props.navigation.navigate("forgetPassword");
   };
 
   return (
@@ -45,18 +46,11 @@ const SignIn = function (props) {
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry
-      />
-      <TouchableOpacity onPress={moveToForgetPage}>
-        <Text style={{ color: "red",fontWeight: "700",  }}>ForgetPassword</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Sign In</Text>
+      <Text style={styles.message}>
+        {authUserMessage ? authUserMessage : null}
+      </Text>
+      <TouchableOpacity style={styles.button} onPress={handleForgetPassword}>
+        <Text style={styles.buttonText}>Send OPT</Text>
       </TouchableOpacity>
     </View>
   );
@@ -90,6 +84,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
+  message: {
+    color: "green",
+    fontWeight: "bold",
+  },
 });
 
-export default SignIn;
+export default ForgetPassword;

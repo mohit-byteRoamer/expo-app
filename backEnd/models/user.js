@@ -15,7 +15,7 @@ const UserModel = mongoose.Schema(
       type: String,
       required: true,
     },
-    token: {
+    otp: {
       type: String,
       default: "",
     },

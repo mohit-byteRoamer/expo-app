@@ -2,8 +2,10 @@ import AuthContext from "./authContext";
 import React from "react";
 
 const AuthState = (props) => {
-  const host = "http://localhost:3000";
   const [userName, setUserName] = React.useState("");
+  const [authUserMessage, setAuthUserMessage] = React.useState("");
+  const [otp, setOtp] = React.useState("");
+
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -12,6 +14,10 @@ const AuthState = (props) => {
   return (
     <AuthContext.Provider
       value={{
+        authUserMessage,
+        setAuthUserMessage,
+        otp,
+        setOtp,
         userName,
         setUserName,
         name,

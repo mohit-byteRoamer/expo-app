@@ -75,15 +75,13 @@ let forgetPassword = async function (req, res) {
     if (!existingUser) {
       return res.status(400).json({ message: "User not found" });
     }
-    const Randomstring = randomstring.generate();
-    const data = await User.updateOne(
-      { email: email },
-      { $set: { token: Randomstring } }
-    );
-    console.log(Randomstring);
-    sendEmail(email, userId, Randomstring);
+    // const Randomstring = randomstring.generate();
+    var otp = Math.floor(100000 + Math.random() * 900000);
+    const data = await User.updateOne({ email: email }, { $set: { otp: otp } });
+    console.log(otp);
+    sendEmail(email, otp);
     res.status(200).json({
-      message: "Please check your inbox of mail and reset your password",
+      message: "Please check your inbox of mail",
     });
   } catch (err) {
     console.log(err);
@@ -93,21 +91,22 @@ let forgetPassword = async function (req, res) {
 
 const resetPassword = async function (req, res) {
   try {
-    const token = req.query.token;
-    const userId = req.query.id;
-    const tokenData = await User.findOne({ token: token });
-    if (tokenData) {
+    const otp = req.body.otp;
+    const email = req.body.email;
+    const existingUser = await User.findOne({ email: email });
+    const verifyOtp = await User.findOne({ otp: otp });
+    console.log(existingUser._id + " userId");
+    if (verifyOtp && existingUser) {
       const salt = await bcrypt.genSaltSync(10);
       const newPassword = await bcrypt.hash(req.body.password, salt);
-
       const userData = await User.findByIdAndUpdate(
-        userId,
-        { $set: { password: newPassword, token: "" } },
+        existingUser._id,
+        { $set: { password: newPassword, otp: "" } },
         { new: true }
       );
       res
         .status(200)
-        .json({ message: "User Password has been reset", data: userData });
+        .json({ message: "User Password has been reset", user: userData });
     } else {
       res.status(200).json({ message: "This link has been expired" });
     }

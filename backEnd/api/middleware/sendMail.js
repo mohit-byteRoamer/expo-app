@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import config from "../config/index.js";
 
-const sendEmail = async function (email, userId, token) {
+const sendEmail = async function (email, otp) {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -17,7 +17,7 @@ const sendEmail = async function (email, userId, token) {
         from: config.user,
         to: email,
         subject: "For reset Password",
-        html: `<p> please copy the link and reset your password <a href="http://localhost:3000/user/resetPassword?id=${userId}&token=${token}">reset your password</a>`,
+        html: `<p> please copy the link and reset your password and otp is ${otp} and please don't share to another one`,
       },
       function (error, infor) {
         if (error) {

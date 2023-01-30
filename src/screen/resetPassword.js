@@ -10,20 +10,35 @@ import {
   StyleSheet,
 } from "react-native";
 
-const SignIn = function (props) {
+const ResetPassword = function (props) {
   const authContext = React.useContext(AuthContext);
-  const { setUserName, email, setEmail, password, setPassword, setShowTab } =
-    authContext;
+  const {
+    authUserMessage,
+    setAuthUserMessage,
+    setUserName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    setShowTab,
+    otp,
+    setOtp,
+  } = authContext;
   const handleSignIn = () => {
     axios
-      .post(`/user/signIn`, {
+      .post(`/user/resetPassword`, {
+        otp,
         email,
         password,
       })
       .then((res) => {
-        setUserName(res.data.existingUser.name);
+        setAuthUserMessage(res.data.message);
+        setTimeout(() => {
+          setAuthUserMessage("");
+          setShowTab(true);
+        }, 1000);
+        setUserName(res.data.user.name);
         AsyncStorage.setItem("token", res.data.authToken);
-        setShowTab(true);
       })
       .catch((e) => {
         if (e.response.data.message) {
@@ -33,12 +48,14 @@ const SignIn = function (props) {
       });
   };
 
-  const moveToForgetPage = () => {
-    props.navigation.navigate("forgetPassword");
-  };
-
   return (
     <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="OTP"
+        value={otp}
+        onChangeText={(text) => setOtp(text)}
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -52,9 +69,9 @@ const SignIn = function (props) {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
       />
-      <TouchableOpacity onPress={moveToForgetPage}>
-        <Text style={{ color: "red",fontWeight: "700",  }}>ForgetPassword</Text>
-      </TouchableOpacity>
+      <Text style={styles.message}>
+        {authUserMessage ? authUserMessage : null}
+      </Text>
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
@@ -92,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default ResetPassword;

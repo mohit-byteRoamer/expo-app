@@ -10,6 +10,8 @@ import {
   User,
   SignUp,
   SignIn,
+  ForgetPassword,
+  ResetPassword,
 } from "../screen/screens";
 import icon from "../constants/icon";
 import NavigationStrings from "../constants/Navigation-Strings";
@@ -92,6 +94,8 @@ let Routes = function () {
           <Stack.Screen name="Todo" component={Root} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="forgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="resetPassword" component={ResetPassword} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
