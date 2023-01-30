@@ -14,7 +14,7 @@ import {
 
 function User(props) {
   const authContext = React.useContext(AuthContext);
-  const { userName } = authContext;
+  const { userName, setShowTab } = authContext;
   const todoContext = React.useContext(TodoContext);
   const { todoItem, getUserTask, updateUserTask, deleteUserTask, message } =
     todoContext;
@@ -32,6 +32,10 @@ function User(props) {
     updateUserTask(id, updateItem, setCurrentEditSection);
   };
 
+  let logOutApp = function () {
+    setShowTab(false);
+  };
+
   React.useEffect(() => {
     getUserTask();
   }, []);
@@ -45,10 +49,7 @@ function User(props) {
             <View style={style.taskInfoBox}>
               <Text>{`User Total Task : ${todoItem.length}`}</Text>
             </View>
-            <Pressable
-              onPress={() => showEditSection(key)}
-              style={style.cardButton}
-            >
+            <Pressable onPress={() => logOutApp()} style={style.cardButton}>
               <Text style={style.buttonText}>Log Out</Text>
             </Pressable>
           </View>

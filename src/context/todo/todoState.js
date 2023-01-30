@@ -2,7 +2,6 @@ import TodoContext from "./todoContext";
 import React from "react";
 import axios from "../../../axios";
 const TodoState = (props) => {
-  const host = "http://localhost:3000";
   const [todoItem, setTodoItem] = React.useState([]);
   const [message, setMessage] = React.useState("");
 

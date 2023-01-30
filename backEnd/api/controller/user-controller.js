@@ -108,7 +108,7 @@ const resetPassword = async function (req, res) {
         .status(200)
         .json({ message: "User Password has been reset", user: userData });
     } else {
-      res.status(200).json({ message: "This link has been expired" });
+      res.status(200).json({ message: "Error" });
     }
   } catch (err) {
     console.log(err);

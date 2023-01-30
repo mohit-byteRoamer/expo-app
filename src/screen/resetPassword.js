@@ -32,18 +32,25 @@ const ResetPassword = function (props) {
         password,
       })
       .then((res) => {
-        setAuthUserMessage(res.data.message);
-        setTimeout(() => {
-          setAuthUserMessage("");
-          setShowTab(true);
-        }, 1000);
-        setUserName(res.data.user.name);
-        AsyncStorage.setItem("token", res.data.authToken);
+        if (res.data.message == "Error") {
+          setAuthUserMessage("Please Enter Valid OTP");
+          setTimeout(() => {
+            setAuthUserMessage("");
+          }, 1000);
+        } else {
+          setAuthUserMessage(res.data.message);
+          setTimeout(() => {
+            setAuthUserMessage("");
+            setShowTab(true);
+          }, 1000);
+          setUserName(res.data.user.name);
+          AsyncStorage.setItem("token", res.data.authToken);
+        }
       })
       .catch((e) => {
         if (e.response.data.message) {
           alert(e.response.data.message);
-          props.navigation.navigate("SignUp");
+          props.navigation.navigate("resetPassword");
         }
       });
   };
@@ -105,6 +112,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
+    fontWeight: "bold",
+  },
+  message: {
+    color: "green",
     fontWeight: "bold",
   },
 });
