@@ -10,6 +10,5 @@ app.use("/user", userApi);
 app.use("/task", taskApi);
 
 app.listen(3000, () => {
-  console.log("Server is Ready");
   ConnectDB();
 });

@@ -1,20 +1,27 @@
 import React from "react";
-import AuthContext from "../context/auth/authContext";
-import axios from "../../axios";
+import AuthContext from "../../context/auth/authContext";
+import axios from "../../../axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
+import { TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { Button, View, Text, Error } from "../widgets/widgets";
 
 const SignIn = function (props) {
   const authContext = React.useContext(AuthContext);
-  const { setUserName, email, setEmail, password, setPassword, setShowTab } =
-    authContext;
-  const handleSignIn = () => {
+  const {
+    authUserMessage,
+    setAuthUserMessage,
+    setUserName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    setShowTab,
+  } = authContext;
+  const handleSignIn = function (email, password) {
+    if (email.length < 6 && password.length < 6) {
+      alert("Please Enter Valid credentials");
+      return;
+    }
     axios
       .post(`/user/signIn`, {
         email,
@@ -26,15 +33,27 @@ const SignIn = function (props) {
         setShowTab(true);
       })
       .catch((e) => {
-        if (e.response.data.message) {
-          alert(e.response.data.message);
-          props.navigation.navigate("SignUp");
+        if (e.response.data.message == "userIdError") {
+          setAuthUserMessage("User not found");
+          setTimeout(() => {
+            setAuthUserMessage("");
+            setPassword("");
+            props.navigation.navigate("SignUp");
+          }, 1000);
+          return;
+        }
+        if (e.response.data.message == "PasswordError") {
+          alert("Please check your password");
         }
       });
   };
 
   const moveToForgetPage = () => {
-    props.navigation.navigate("forgetPassword");
+    if (email.length < 6) {
+      alert("Please Enter Valid Email");
+      return;
+    }
+    props.navigation.navigate("ForgetPassword");
   };
 
   return (
@@ -45,6 +64,7 @@ const SignIn = function (props) {
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
+      <Error error={authUserMessage} />
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -53,11 +73,9 @@ const SignIn = function (props) {
         secureTextEntry
       />
       <TouchableOpacity onPress={moveToForgetPage}>
-        <Text style={{ color: "red",fontWeight: "700",  }}>ForgetPassword</Text>
+        <Text style={{ color: "red", fontWeight: "700" }}>ForgetPassword</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Sign In</Text>
-      </TouchableOpacity>
+      <Button onPress={() => handleSignIn(email, password)} text={"Sign In"} />
     </View>
   );
 };
@@ -76,19 +94,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "grey",
     borderRadius: 5,
-  },
-  button: {
-    width: "80%",
-    height: 50,
-    backgroundColor: "blue",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 5,
-    margin: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
   },
 });
 

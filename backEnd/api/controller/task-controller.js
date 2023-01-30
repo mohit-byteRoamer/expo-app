@@ -1,6 +1,5 @@
 import Task from "../../models/todoTask.js";
 let createUserTask = async function (req, res) {
-  console.log(req.user);
   const task = await Task.create({
     user: req.user.id,
     title: req.body.title,
@@ -14,7 +13,6 @@ let updateUserTask = async function (req, res) {
   const newTask = {
     title,
   };
-  console.log(newTask);
   try {
     let updateTask = await Task.findByIdAndUpdate(id, newTask);
     updateTask["title"] = title;

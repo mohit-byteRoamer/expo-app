@@ -34,10 +34,8 @@ let signUp = async function (req, res) {
       },
     };
     const authToken = jwt.sign(data, SECRET_KEY);
-    console.log(authToken);
     res.json({ user, authToken });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Something went wrong" });
   }
 };
@@ -47,11 +45,11 @@ let signIn = async function (req, res) {
   try {
     const existingUser = await User.findOne({ email: email });
     if (!existingUser) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "userIdError" });
     }
     const checkPassword = await bcrypt.compare(password, existingUser.password);
     if (!checkPassword) {
-      return res.status(400).json({ message: "please check your password" });
+      return res.status(400).json({ message: "PasswordError" });
     }
     let data = {
       user: {
@@ -61,7 +59,6 @@ let signIn = async function (req, res) {
     const authToken = jwt.sign(data, SECRET_KEY);
     res.json({ existingUser, authToken });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Something went wrong" });
   }
 };
@@ -78,14 +75,13 @@ let forgetPassword = async function (req, res) {
     // const Randomstring = randomstring.generate();
     var otp = Math.floor(100000 + Math.random() * 900000);
     const data = await User.updateOne({ email: email }, { $set: { otp: otp } });
-    console.log(otp);
     sendEmail(email, otp);
     res.status(200).json({
       message: "Please check your inbox of mail",
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Something went wrong" });
+ 
+    res.status(500).json({ message: "Error" });
   }
 };
 
@@ -111,7 +107,6 @@ const resetPassword = async function (req, res) {
       res.status(200).json({ message: "Error" });
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Something went wrong" });
   }
 };

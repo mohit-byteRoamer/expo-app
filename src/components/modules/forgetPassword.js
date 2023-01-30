@@ -1,24 +1,17 @@
 import React from "react";
-import AuthContext from "../context/auth/authContext";
-import axios from "../../axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
+import AuthContext from "../../context/auth/authContext";
+import axios from "../../../axios";
+import { TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { Button, Text, View } from "../widgets/widgets";
 
 const ForgetPassword = function (props) {
   const authContext = React.useContext(AuthContext);
-  const {
-    authUserMessage,
-    setAuthUserMessage,
-    email,
-    setEmail,
-  } = authContext;
+  const { authUserMessage, setAuthUserMessage, email, setEmail } = authContext;
   const handleForgetPassword = () => {
+    if (email.length < 6) {
+      alert("Please Enter Valid Email");
+      return;
+    }
     axios
       .post(`/user/forgetPassword`, {
         email,
@@ -27,13 +20,16 @@ const ForgetPassword = function (props) {
         setAuthUserMessage(res.data.message);
         setTimeout(() => {
           setAuthUserMessage("");
-          props.navigation.navigate("resetPassword");
+          props.navigation.navigate("ResetPassword");
         }, 1000);
       })
       .catch((e) => {
         if (e.response.data.message) {
-          alert(e.response.data.message);
-          props.navigation.navigate("SignUp");
+          setAuthUserMessage(res.data.message);
+          setTimeout(() => {
+            setAuthUserMessage("");
+            props.navigation.navigate("SignIn");
+          }, 1000);
         }
       });
   };
@@ -49,9 +45,7 @@ const ForgetPassword = function (props) {
       <Text style={styles.message}>
         {authUserMessage ? authUserMessage : null}
       </Text>
-      <TouchableOpacity style={styles.button} onPress={handleForgetPassword}>
-        <Text style={styles.buttonText}>Send OPT</Text>
-      </TouchableOpacity>
+      <Button onPress={handleForgetPassword} text={"Send OTP"} />
     </View>
   );
 };

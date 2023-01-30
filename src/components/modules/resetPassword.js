@@ -1,6 +1,6 @@
 import React from "react";
-import AuthContext from "../context/auth/authContext";
-import axios from "../../axios";
+import AuthContext from "../../context/auth/authContext";
+import axios from "../../../axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   View,
@@ -25,6 +25,15 @@ const ResetPassword = function (props) {
     setOtp,
   } = authContext;
   const handleSignIn = () => {
+    if (
+      (otp.length < 6 && email.length < 6 && password.length < 6) ||
+      (!otp.length || !email.length || !password.length)
+    ) {
+      alert(
+        "Please Enter Valid credentials and character must be above 6 for every credentials"
+      );
+      return;
+    }
     axios
       .post(`/user/resetPassword`, {
         otp,

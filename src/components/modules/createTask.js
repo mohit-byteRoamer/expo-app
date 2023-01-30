@@ -1,13 +1,13 @@
 import * as React from "react";
-import TodoContext from "../context/todo/todoContext";
+import TodoContext from "../../context/todo/todoContext";
 import {
   StyleSheet,
   Pressable,
-  View,
-  Text,
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { Button, Text, View } from "../widgets/widgets";
+
 function CreateTask(props) {
   const todoContext = React.useContext(TodoContext);
   const { createUserTask, message } = todoContext;
@@ -29,9 +29,6 @@ function CreateTask(props) {
 
   return (
     <View style={styles.todoSection}>
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>See All Task</Text>
-      </TouchableOpacity>
       <View style={styles.todoBoxOperation}>
         <TextInput
           style={styles.input}
@@ -39,20 +36,20 @@ function CreateTask(props) {
           value={todoValue}
           placeholder="Add you new todo"
         />
-        <Pressable onPress={() => createTodo(todoValue)} style={styles.button}>
-          <Text style={styles.buttonText}>+</Text>
-        </Pressable>
+        <Text style={styles.alert}>
+          {alert ? "Character length must be above 4" : null}
+        </Text>
+        <Text style={styles.message}>{message ? message : null}</Text>
+        <Button onPress={() => createTodo(todoValue)} text={"Create Task"} />
+        <Button onPress={handleSignIn} text={"See All Task"} />
       </View>
-      <Text style={styles.alert}>
-        {alert ? "Character length must be above 3" : null}
-      </Text>
-      <Text style={styles.message}>{message ? message : null}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   todoSection: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     margin: 10,
@@ -62,33 +59,21 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   todoBoxOperation: {
+    width: "100%",
     padding: 6,
     display: "flex",
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  input: {
+    width: "80%",
     borderWidth: 0.5,
     borderColor: "black",
     borderRadius: 4,
+    padding: 10,
   },
-  input: {
-    padding: 6,
-  },
-  button: {
-    borderWidth: 2,
-    margin: 10,
-    padding: 4,
-    borderColor: "black",
-    borderRadius: 4,
-    backgroundColor: "#131ACE",
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "white",
-  },
-
   alert: {
+    margin: 4,
     color: "red",
     fontWeight: "bold",
   },

@@ -1,7 +1,7 @@
 import React from "react";
-import AuthContext from "../context/auth/authContext";
-import TodoContext from "../context/todo/todoContext";
-import icon from "../constants/icon";
+import AuthContext from "../../context/auth/authContext";
+import TodoContext from "../../context/todo/todoContext";
+import icon from "../../constants/icon";
 import {
   StyleSheet,
   Pressable,
@@ -68,34 +68,36 @@ function User(props) {
                             {val.title}
                           </Text>
                         </View>
-                        {currentEditSection == key ? (
-                          <Pressable
-                            onPress={() =>
-                              updateTodoItem(
-                                val._id,
-                                editValue,
-                                setCurrentEditSection
-                              )
-                            }
-                            style={style.cardButton}
-                          >
-                            <Text style={style.buttonText}>Update</Text>
-                          </Pressable>
-                        ) : (
-                          <Pressable
-                            onPress={() => showEditSection(key)}
-                            style={style.cardButton}
-                          >
-                            <Text style={style.buttonText}>Edit</Text>
-                          </Pressable>
-                        )}
+                        <View>
+                          {currentEditSection == key ? (
+                            <Pressable
+                              onPress={() =>
+                                updateTodoItem(
+                                  val._id,
+                                  editValue,
+                                  setCurrentEditSection
+                                )
+                              }
+                              style={style.cardButton}
+                            >
+                              <Text style={style.buttonText}>Update</Text>
+                            </Pressable>
+                          ) : (
+                            <Pressable
+                              onPress={() => showEditSection(key)}
+                              style={style.cardButton}
+                            >
+                              <Text style={style.buttonText}>Edit</Text>
+                            </Pressable>
+                          )}
 
-                        <Pressable
-                          onPress={() => deleteTodoItem(val._id, key)}
-                          style={style.cardButton}
-                        >
-                          <Text style={style.buttonText}>Delete</Text>
-                        </Pressable>
+                          <Pressable
+                            onPress={() => deleteTodoItem(val._id, key)}
+                            style={style.cardButton}
+                          >
+                            <Text style={style.buttonText}>Delete</Text>
+                          </Pressable>
+                        </View>
                       </View>
                       <View>
                         {currentEditSection == key ? (
@@ -164,6 +166,9 @@ const style = StyleSheet.create({
     fontWeight: "bold",
   },
   todoCard: {
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "space-between",
     padding: 4,
     margin: 4,
     borderRadius: 4,
@@ -173,7 +178,7 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   todoCardText: {
     fontSize: 16,

@@ -21,13 +21,11 @@ const sendEmail = async function (email, otp) {
       },
       function (error, infor) {
         if (error) {
-          console.log(error);
         } else {
           console.log("mail has been sent", infor.response);
         }
       }
     );
-    console.log("mail.send successfully");
   } catch (err) {
     console.log(err, "mail not sent");
   }

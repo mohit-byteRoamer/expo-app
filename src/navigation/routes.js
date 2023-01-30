@@ -5,14 +5,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Image } from "react-native";
 import {
   Root,
-  Home,
   CreateTask,
   User,
   SignUp,
   SignIn,
   ForgetPassword,
   ResetPassword,
-} from "../screen/screens";
+} from "../components/modules/screens";
 import icon from "../constants/icon";
 import NavigationStrings from "../constants/Navigation-Strings";
 import AuthContext from "../context/auth/authContext";
@@ -34,24 +33,6 @@ let Routes = function () {
             tabBarShowLabel: false,
           }}
         >
-          <Tab.Screen
-            name={NavigationStrings.Home}
-            component={Home}
-            options={{
-              tabBarIcon: ({ focused }) => {
-                return (
-                  <Image
-                    style={{
-                      tintColor: focused ? "#2A5ADF" : "#D4D7DF",
-                      width: 23,
-                      height: 23,
-                    }}
-                    source={icon.homeIcon}
-                  />
-                );
-              },
-            }}
-          />
           <Tab.Screen
             name={NavigationStrings.CreateTask}
             component={CreateTask}
@@ -94,8 +75,8 @@ let Routes = function () {
           <Stack.Screen name="Todo" component={Root} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="forgetPassword" component={ForgetPassword} />
-          <Stack.Screen name="resetPassword" component={ResetPassword} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

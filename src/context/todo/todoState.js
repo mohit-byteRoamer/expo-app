@@ -9,7 +9,6 @@ const TodoState = (props) => {
     axios.get(`/task/getUserTask`).then((res) => {
       debugger;
       setTodoItem(res.data);
-      console.log(res.data);
     });
   };
 

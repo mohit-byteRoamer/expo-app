@@ -4,6 +4,5 @@ export { default as SignIn } from "./signIn";
 export { default as ForgetPassword } from "./forgetPassword";
 export { default as ResetPassword } from "./resetPassword";
 
-export { default as Home } from "./home";
 export { default as CreateTask } from "./createTask";
 export { default as User } from "./user";

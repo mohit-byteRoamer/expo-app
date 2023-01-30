@@ -1,15 +1,9 @@
 import React from "react";
-import AuthContext from "../context/auth/authContext";
-import axios from "../../axios";
+import AuthContext from "../../context/auth/authContext";
+import axios from "../../../axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
+import { TextInput, StyleSheet } from "react-native";
+import { Button, View } from "../widgets/widgets";
 
 const SignUp = function (props) {
   const authContext = React.useContext(AuthContext);
@@ -24,6 +18,15 @@ const SignUp = function (props) {
     setShowTab,
   } = authContext;
   const handleSignUp = function (name, email, password) {
+    if (
+      (name.length < 6 && email.length < 6 && password.password < 6) ||
+      (!name.length && !email.length)
+    ) {
+      alert(
+        "Please Enter Valid credentials and character must be above 6 for every credentials"
+      );
+      return;
+    }
     axios
       .post(`/user/signUp`, {
         name,
@@ -38,7 +41,9 @@ const SignUp = function (props) {
       .catch((e) => {
         if (e.response.data.message) {
           alert(e.response.data.message);
-          props.navigation.navigate("SignIn");
+          setTimeout(() => {
+            props.navigation.navigate("SignIn");
+          }, 1000);
         }
       });
   };
@@ -64,12 +69,10 @@ const SignUp = function (props) {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
       />
-      <TouchableOpacity
-        style={styles.button}
+      <Button
         onPress={() => handleSignUp(name, email, password)}
-      >
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
+        text={"Sign Up"}
+      />
     </View>
   );
 };
@@ -88,19 +91,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "grey",
     borderRadius: 5,
-  },
-  button: {
-    width: "80%",
-    height: 50,
-    backgroundColor: "blue",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 5,
-    margin: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
   },
 });
 
